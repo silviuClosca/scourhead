@@ -27,14 +27,14 @@ export async function searchGoogle(query: string, maxPages: number = 1): Promise
     const page: Page = await context.newPage();
 
     logger.info("Navigating to Google...");
-    await page.goto('https://www.google.com', { waitUntil: 'domcontentloaded' });
+    await page.goto('https://www.google.com/?hl=en-GB', { waitUntil: 'domcontentloaded' });
 
     logger.info("Checking for cookie consent prompt...");
     try {
-        await page.click('button[aria-label="Accept all"]', { timeout: 3000 });
+        await page.click('button:has-text("Accept All")', { timeout: 3000 });
         logger.info("Cookie consent accepted.");
     } catch (e) {
-        logger.info("No cookies prompt found.");
+        logger.info("No 'Accept All' button found or element interaction failed.");
     }
 
     logger.info(`Performing search for query: "${query}"`);
